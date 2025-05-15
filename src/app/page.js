@@ -1,5 +1,5 @@
 'use client'
-import { Slider } from "@mui/material";
+import { Slider, styled } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -36,6 +36,37 @@ const icons = [
   },
 ];
 
+const CustomSlider = styled(Slider)({
+  padding: '0',
+  height: 8,
+  '& .MuiSlider-rail': {
+    backgroundColor: '#A5E0DD',
+  },
+  '& .MuiSlider-track': {
+    backgroundColor: '#105955',
+    border: 'none',
+  },
+  '& .MuiSlider-thumb': {
+    width: 24,
+    height: 24,
+    backgroundColor: '#A5E0DD',
+    border: '3px solid rgba(16, 89, 85, 0.63)',
+    '&:hover, &.Mui-focusVisible': {
+      boxShadow: 'none',
+    },
+    '&::after': {
+      display: 'none',
+    },
+  },
+  '& .MuiSlider-valueLabel': {
+    display: 'none',
+  },
+  '& .MuiSlider-mark': {
+    width: 0,
+    height: 0,
+  },
+});
+
 export default function page() {
 
   const [value, setValue] = useState(5);
@@ -46,7 +77,9 @@ export default function page() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  }
+
+    
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-br from-sky-400 to-yellow-200 p-2">
@@ -116,7 +149,7 @@ export default function page() {
                 </div>
               ))}
             </div>
-            <Slider
+            <CustomSlider
               aria-label="Temperature"
               value={value}
               valueLabelDisplay="auto"
