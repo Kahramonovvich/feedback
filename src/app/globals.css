@@ -10,13 +10,20 @@
   box-sizing: border-box;
 }
 
+body {
+  background: linear-gradient(to bottom right, #38bdf8, #fef08a);
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.MuiSlider-root {
+  padding: 0 !important;
 }

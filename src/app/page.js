@@ -1,8 +1,9 @@
 'use client'
 import { Slider, styled } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 
 const icons = [
   {
@@ -104,10 +105,21 @@ export default function page() {
   const [phone, setPhone] = useState('');
   const [text, setText] = useState('');
   const [free, setFree] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setFree(false);
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    const filePreviews = selectedFiles.map(file => ({
+      file,
+      url: URL.createObjectURL(file)
+    }));
+    setFiles(filePreviews);
   };
 
   const handleSubmit = (e) => {
@@ -129,9 +141,14 @@ export default function page() {
     setFree(false);
   };
 
+  console.log(files);
+
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-sky-400 to-yellow-200 p-2">
+    <div className="flex items-center justify-center p-2">
       <div className="w-full max-w-96 bg-white shadow-md p-5 rounded-xl relative overflow-hidden">
+        <h1 className="mb-5 font-bold text-2xl text-[#20B2AA]">
+          Izoh qoldirish
+        </h1>
         <form
           className="flex flex-col"
           onSubmit={handleSubmit}
@@ -214,15 +231,55 @@ export default function page() {
               max={5}
             />
           </div>
-          <textarea
-            name="comment"
-            id="comment"
-            required
-            placeholder="Izohingizni kiriting..."
-            onChange={(e) => setText(e.target.value)}
-            value={text}
-            className="border mt-7 rounded-lg h-40 px-2.5 py-3 outline-[#105955] font-semibold text-[#105955] text-sm shadow-md"
-          ></textarea>
+          <div className="box mt-5 relative">
+            <div
+              className={`box bg-gray-300 px-2.5 py-1.5 rounded-t-lg absolute top-0 w-full flex justify-end
+                ${isFocused ? 'border-2 border-[#105955]' : 'border-2 border-gray-300'}`}
+            >
+              <label
+                htmlFor="file"
+                className="cursor-pointer"
+              >
+                <AddPhotoAlternateOutlinedIcon />
+              </label>
+              <input
+                multiple
+                id="file"
+                type="file"
+                name="file"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </div>
+            <textarea
+              name="comment"
+              id="comment"
+              required
+              placeholder="Izohingizni kiriting..."
+              onChange={(e) => setText(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              value={text}
+              className="border w-full rounded-lg h-60 min-h-60 px-2.5 py-3 pt-11 outline-[#105955] font-semibold text-[#105955] text-sm shadow-md"
+            ></textarea>
+          </div>
+          {files.length > 0 && (
+            <div className="box grid grid-cols-4 gap-5 mt-5">
+              {files.map((item, index) => (
+                <div
+                  className="img relative w-14 h-14 border rounded"
+                  key={index}
+                >
+                  <Image
+                    fill
+                    src={item.url}
+                    style={{ objectFit: 'contain' }}
+                    alt={item.file.name}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
           <button
             type="submit"
             className="w-full p-3.5 mt-10 bg-[#20B2AA] rounded-lg text-white text-sm font-bold"
