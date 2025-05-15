@@ -2,6 +2,7 @@
 import { Slider, styled } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const icons = [
   {
@@ -67,23 +68,70 @@ const CustomSlider = styled(Slider)({
   },
 });
 
+const txt = [
+  {
+    val: 1,
+    title: 'Ming bor uzr! 😔',
+    txt: "Fikr bildirganingiz uchun rahmat. Afsuski, bu safar sizni xursand qila olmadik. Kelgusida buni albatta tuzatamiz."
+  },
+  {
+    val: 2,
+    title: 'Eʼtiboringiz uchun rahmat!',
+    txt: "Sizning fikringiz biz uchun muhim. Yaxshilanish yo‘lida har bir izoh bizga yordam beradi."
+  },
+  {
+    val: 3,
+    title: 'Yaxshi!',
+    txt: "Rahmat! Sizning bahoingiz bizga yo‘l ko‘rsatadi. Har doim yanada yaxshisi uchun harakatdamiz."
+  },
+  {
+    val: 4,
+    title: 'Zo‘r!',
+    txt: "Fikringiz uchun katta rahmat! Sizga yoqqanidan juda xursandmiz. Yana uchrashguncha!"
+  },
+  {
+    val: 5,
+    title: 'Ajoyib! 😍',
+    txt: "Sizdan shunday iliq fikr olish – biz uchun eng katta mukofot! Har doim sizga xizmat qilishdan mamnunmiz!"
+  }
+];
+
 export default function page() {
 
-  const [value, setValue] = useState(5);
+  const [value, setValue] = useState(0);
+  const [show, setShow] = useState(false);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [text, setText] = useState('');
+  const [free, setFree] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setFree(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (value === 0) {
+      setFree(true);
+      return;
+    };
 
-    
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    setValue(0);
+    setName('');
+    setPhone('');
+    setText('');
+    setFree(false);
   };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-br from-sky-400 to-yellow-200 p-2">
-      <div className="w-full max-w-96 bg-white shadow-md p-5 rounded-xl">
+      <div className="w-full max-w-96 bg-white shadow-md p-5 rounded-xl relative overflow-hidden">
         <form
           className="flex flex-col"
           onSubmit={handleSubmit}
@@ -100,6 +148,8 @@ export default function page() {
             id="name"
             required
             placeholder="Abdullayev Abdulla"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
             className="border font-bold text-xs text-[#105955] rounded-lg shadow w-full px-2.5 py-3 outline-[#105955]"
           />
           <label
@@ -121,6 +171,9 @@ export default function page() {
               id="phone"
               required
               placeholder="99 999 99 99"
+              onChange={(e) => setPhone(e.target.value)}
+              value={phone}
+              onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
               className="border font-bold text-xs text-[#105955] rounded-lg shadow w-full px-2.5 py-3 pl-10 outline-[#105955]"
             />
           </div>
@@ -130,12 +183,13 @@ export default function page() {
               {icons.map((item) => (
                 <div
                   key={item.val}
-                  className="box p-2.5 flex flex-col items-center cursor-pointer"
+                  className={`box p-2.5 flex flex-col items-center cursor-pointer animate-duration-500 ${free ? 'animate-horizontal-vibration' : ''}`}
+                  onClick={() => {
+                    setValue(item.val);
+                    setFree(false);
+                  }}
                 >
-                  <div
-                    className="img w-10 h-10 relative"
-                    onClick={() => setValue(item.val)}
-                  >
+                  <div className={`img w-10 h-10 relative mb-0.5`}>
                     <Image
                       fill
                       src={item.val === value ? item.ico1 : item.ico}
@@ -163,7 +217,10 @@ export default function page() {
           <textarea
             name="comment"
             id="comment"
+            required
             placeholder="Izohingizni kiriting..."
+            onChange={(e) => setText(e.target.value)}
+            value={text}
             className="border mt-7 rounded-lg h-40 px-2.5 py-3 outline-[#105955] font-semibold text-[#105955] text-sm shadow-md"
           ></textarea>
           <button
@@ -173,6 +230,41 @@ export default function page() {
             JO'NATISH
           </button>
         </form>
+        <div className={`absolute left-0 w-full h-full z-10
+          ${show ? 'bottom-0' : '-bottom-full'} transition-all duration-500 ease-in-out`}>
+          <div className={`box absolute bottom-0 left-0 w-full h-1/2 bg-white z-10 rounded-t-3xl border-t-2 p-5 shadow-md`}>
+            <div className="flex flex-col h-full">
+              <div className="box flex justify-end">
+                <button
+                  onClick={() => handleClose()}
+                >
+                  <CloseRoundedIcon />
+                </button>
+              </div>
+              <div className="text mt-3">
+                {txt.map((item) => (
+                  <div
+                    key={item.val}
+                    className={`box flex-col gap-y-5 ${item.val !== value ? 'hidden' : 'flex'}`}
+                  >
+                    <p className="font-bold text-[#105955] text-3xl text-center">
+                      {item.val === value && item.title}
+                    </p>
+                    <p className="font-semibold text-[#105955] text-sm text-center">
+                      {item.val === value && item.txt}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <button
+                className="bg-[#105955] w-full text-white p-3.5 rounded-lg text-sm font-bold mt-auto"
+                onClick={() => handleClose()}
+              >
+                YOPISH
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
