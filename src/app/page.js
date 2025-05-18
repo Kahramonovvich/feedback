@@ -139,6 +139,7 @@ export default function page() {
     setPhone('');
     setText('');
     setFree(false);
+    setFiles([]);
   };
 
   console.log(files);
