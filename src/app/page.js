@@ -1,7 +1,7 @@
 'use client'
 import { Slider, styled } from "@mui/material";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 
@@ -107,6 +107,8 @@ export default function page() {
   const [free, setFree] = useState(false);
   const [files, setFiles] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
+  const [subdomain, setSubdomain] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -122,14 +124,42 @@ export default function page() {
     setFiles(filePreviews);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (value === 0) {
       setFree(true);
       return;
     };
 
-    setShow(true);
+    setIsLoading(true);
+
+    const formData = new FormData();
+
+    formData.append('FullName', name);
+    formData.append('PhoneNumber', `+998${phone}`);
+    formData.append('Organisation', subdomain);
+    formData.append('RateStatus', value);
+    formData.append('Description', text);
+    files.forEach(({ file }) => {
+      formData.append('File', file);
+    });
+
+    try {
+      const res = await fetch(`/api/Feedback/Create/create`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (res.ok) {
+        setShow(true);
+      } else {
+        alert('Izoh jo`natishda xatolik yuz berdi. Iltomos keyinroq qayta urinib ko`ring.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('xatolik');
+    } finally {
+      setIsLoading(false);
+    };
   };
 
   const handleClose = () => {
@@ -142,7 +172,13 @@ export default function page() {
     setFiles([]);
   };
 
-  console.log(files);
+  useEffect(() => {
+    const host = window.location.hostname;
+    const parts = host.split('.');
+    if (parts.length > 2) {
+      setSubdomain(parts[0]);
+    }
+  }, []);
 
   return (
     <div className="flex items-center justify-center p-2">
@@ -244,7 +280,6 @@ export default function page() {
                 <AddPhotoAlternateOutlinedIcon />
               </label>
               <input
-                multiple
                 id="file"
                 type="file"
                 name="file"
@@ -284,8 +319,9 @@ export default function page() {
           <button
             type="submit"
             className="w-full p-3.5 mt-10 bg-[#20B2AA] rounded-lg text-white text-sm font-bold"
+            disabled={isLoading}
           >
-            JO'NATISH
+            {isLoading ? `JO'NATILMOQDA` : `JO'NATISH`}
           </button>
         </form>
         <div className={`absolute left-0 w-full h-full z-10
