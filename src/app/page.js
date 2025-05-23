@@ -1,5 +1,5 @@
 'use client'
-import { Slider, styled } from "@mui/material";
+import { CircularProgress, Slider, styled } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -183,6 +183,11 @@ export default function page() {
   return (
     <div className="flex items-center justify-center p-2">
       <div className="w-full max-w-96 bg-white shadow-md p-5 rounded-xl relative overflow-hidden">
+        {isLoading && (
+          <div className="box absolute top-0 left-0 z-50 bg-white bg-opacity-50 w-full h-full flex items-center justify-center">
+            <CircularProgress />
+          </div>
+        )}
         <h1 className="mb-5 font-bold text-2xl text-[#20B2AA]">
           Izoh qoldirish
         </h1>
