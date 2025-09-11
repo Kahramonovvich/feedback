@@ -3,7 +3,7 @@ const BASE_URL = 'http://45.138.158.239:7868';
 export async function POST(req) {
     try {
         const formData = await req.formData();
-        const res = await fetch(`${BASE_URL}/api/Feedback/Create/create`, {
+        const res = await fetch(`${BASE_URL}/api/Feedback/Create`, {
             method: 'POST',
             body: formData,
         });
