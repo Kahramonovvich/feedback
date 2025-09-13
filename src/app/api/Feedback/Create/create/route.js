@@ -1,4 +1,4 @@
-const BASE_URL = 'https://perfettofood.uz/api';
+const BASE_URL = 'https://perfettofood.uz';
 
 export async function POST(req) {
     try {

@@ -4,12 +4,12 @@ import { Search, Star, StarHalf, Image as ImageIcon, Phone, Calendar, X, Loader2
 import Image from 'next/image';
 
 export default function Page({ params }) {
-    
+
     const resolvedParams = use(params);
     const organizationName = resolvedParams.organizationName;
 
     const FEEDBACK_URL =
-        `https://perfettofood.uz/api/api/Feedback/GetAllWhithOrganisation?Name=${encodeURIComponent(organizationName || '')}`;
+        `https://perfettofood.uz/api/Feedback/GetAllWhithOrganisation?Name=${encodeURIComponent(organizationName || '')}`;
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -72,8 +72,8 @@ export default function Page({ params }) {
         const avg = total
             ? (data.reduce((s, x) => s + (Number(x?.rateStatus) || 0), 0) / total)
             : 0;
-        const withImg = data.filter(x => x?.file).length;
-        const newCnt = data.filter(x => String(x?.status) === '1').length;
+        const withImg = data.filter(x => x?.file.length).length;
+        const newCnt = data.filter(x => String(x?.status) === '0').length;
         return { total, avg, withImg, newCnt };
     }, [data]);
 
@@ -86,8 +86,8 @@ export default function Page({ params }) {
     };
 
     const badgeByStatus = (s) => {
-        if (String(s) === '1') return ['bg-amber-100 text-amber-800 border-amber-200', 'Новый'];
-        if (String(s) === '2') return ['bg-emerald-100 text-emerald-800 border-emerald-200', 'Отвечен'];
+        if (String(s) === '0') return ['bg-amber-100 text-amber-800 border-amber-200', 'Новый'];
+        if (String(s) === '1') return ['bg-emerald-100 text-emerald-800 border-emerald-200', 'Отвечен'];
         return ['bg-slate-100 text-slate-700 border-slate-200', 'Неизвестно'];
     };
 
@@ -123,7 +123,7 @@ export default function Page({ params }) {
                     </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-3 lg:gap-5 gap-3">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
@@ -139,8 +139,8 @@ export default function Page({ params }) {
                         className="h-11 rounded-2xl border border-slate-200 bg-white/70 px-3 outline-none focus:ring-2 ring-blue-500"
                     >
                         <option value="all">Все статусы</option>
-                        <option value="1">Новые</option>
-                        <option value="2">Отвеченные</option>
+                        <option value="0">Новые</option>
+                        <option value="1">Отвеченные</option>
                     </select>
                     <select
                         value={minRate}
@@ -178,10 +178,10 @@ export default function Page({ params }) {
                                     className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-xl transition-all"
                                 >
                                     <div className="aspect-[16/9] bg-slate-100 overflow-hidden relative">
-                                        {item?.file ? (
+                                        {item?.file.length ? (
                                             <Image
                                                 fill
-                                                src={item?.file}
+                                                src={item?.file[0]}
                                                 alt={item?.description || 'Фото отзыва'}
                                                 className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform"
                                                 onClick={() => setOpen(item)}
