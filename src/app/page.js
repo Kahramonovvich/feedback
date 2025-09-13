@@ -153,7 +153,7 @@ export default function page() {
         setShow(true);
       } else {
         alert('Izoh jo`natishda xatolik yuz berdi. Iltomos keyinroq qayta urinib ko`ring.');
-      }
+      };
     } catch (error) {
       console.error(error);
       alert('xatolik');
@@ -290,6 +290,7 @@ export default function page() {
                 name="file"
                 className="hidden"
                 onChange={handleFileChange}
+                multiple
               />
             </div>
             <textarea
