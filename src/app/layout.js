@@ -1,3 +1,4 @@
+import { Bounce, ToastContainer } from "react-toastify";
 import "./globals.css";
 
 export const metadata = {
@@ -9,6 +10,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="uz">
       <body className={``}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Bounce}
+        />
         {children}
       </body>
     </html>
