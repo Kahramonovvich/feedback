@@ -201,7 +201,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-slate-400">
-                                                <div className="imgBox relative w-40 h-40">
+                                                <div className="imgBox relative lg:w-40 w-32 lg:h-40 h-32">
                                                     <Image
                                                         fill
                                                         src={'/favicon.ico'}
@@ -265,7 +265,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
             {open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/50 animate-fade-in" onClick={() => setOpen(null)} />
-                    <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-pop">
+                    <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-y-scroll h-full lg:overflow-hidden lg:h-auto animate-pop">
                         <div className="grid md:grid-cols-2 gap-0">
                             <div className="bg-slate-50 p-3 md:p-4">
                                 <div className="w-full h-full relative overflow-hidden rounded-2xl bg-white">
@@ -279,7 +279,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
                                         />
                                     ) : (
                                         <div className="w-full h-full p-10 flex items-center justify-center text-slate-400">
-                                            <div className="imgBox relative w-full aspect-square">
+                                            <div className="imgBox relative w-full h-full lg:w-auto max-h-80 aspect-square">
                                                 <Image
                                                     fill
                                                     src={'/favicon.ico'}
