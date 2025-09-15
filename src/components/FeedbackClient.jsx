@@ -11,7 +11,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
 
     const router = useRouter();
     console.log(feeds);
-    
+
 
     const [loading, setLoading] = useState(true);
     const [stsLoading, setStsLoading] = useState(false);
@@ -206,6 +206,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
                                                         fill
                                                         src={'/favicon.ico'}
                                                         alt='No Image'
+                                                        unoptimized={true}
                                                     />
                                                 </div>
                                             </div>
@@ -283,6 +284,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
                                                     fill
                                                     src={'/favicon.ico'}
                                                     alt='No Image'
+                                                    unoptimized={true}
                                                 />
                                             </div>
                                         </div>
