@@ -8,7 +8,7 @@ export default async function Page({ params }) {
     let feeds = [];
     try {
         const res = await fetch(FEEDBACK_URL, {
-            next: { revalidate: 60, tags: ["feeds"] }
+            next: { revalidate: 10, tags: ["feeds"] }
         });
         if (res.ok) {
             const ct = res.headers.get('content-type') || '';

@@ -279,7 +279,7 @@ export default function FeedbackClient({ organizationName, feeds }) {
                                         />
                                     ) : (
                                         <div className="w-full h-full p-10 flex items-center justify-center text-slate-400">
-                                            <div className="imgBox relative h-full aspect-square">
+                                            <div className="imgBox relative w-full aspect-square">
                                                 <Image
                                                     fill
                                                     src={'/favicon.ico'}
