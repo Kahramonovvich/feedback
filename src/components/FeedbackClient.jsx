@@ -314,6 +314,9 @@ export default function FeedbackClient({ organizationName, feeds }) {
                                             <div className="flex items-center gap-2">
                                                 <Calendar className="w-4 h-4" />
                                                 {prettyDate(open?.updateAt)}
+                                                <p>
+                                                    {open?.status === 2 ? "В процессе" : "Отвечен"}
+                                                </p>
                                             </div>
                                         </div>
                                     )}
